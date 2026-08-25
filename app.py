@@ -12,9 +12,9 @@ from src.retriever import find_relevant_chunks
 from src.answer_generator import generate_answer
 
 
-# ==================================================
+# =========================================================
 # SAYFA AYARLARI
-# ==================================================
+# =========================================================
 
 st.set_page_config(
     page_title="Doküman AI Asistanı",
@@ -24,417 +24,394 @@ st.set_page_config(
 )
 
 
-# ==================================================
-# TASARIM / CSS
-# ==================================================
+# =========================================================
+# CSS TASARIM
+# =========================================================
 
-st.markdown(
-    """
-    <style>
+st.html("""
+<style>
 
-    /* ANA SAYFA */
-    .stApp {
-        background:
-            radial-gradient(
-                circle at 15% 0%,
-                rgba(79, 70, 229, 0.15),
-                transparent 28%
-            ),
-            radial-gradient(
-                circle at 85% 5%,
-                rgba(59, 130, 246, 0.10),
-                transparent 25%
-            ),
-            #0b0f17;
-    }
+.stApp {
+    background:
+        radial-gradient(
+            circle at 10% 0%,
+            rgba(78, 70, 229, 0.18),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 0%,
+            rgba(37, 99, 235, 0.10),
+            transparent 30%
+        ),
+        #0b0f17;
+}
 
-    .block-container {
-        max-width: 940px;
-        padding-top: 2.4rem;
-        padding-bottom: 4rem;
-    }
+.block-container {
+    max-width: 940px;
+    padding-top: 2.5rem;
+    padding-bottom: 4rem;
+}
 
+/* HERO */
 
-    /* HERO */
-    .hero {
-        padding: 10px 0 10px 0;
-        margin-bottom: 8px;
-    }
+.hero {
+    padding-top: 10px;
+    margin-bottom: 36px;
+}
 
-    .hero-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
+.hero-badge {
+    display: inline-block;
+    padding: 8px 14px;
+    margin-bottom: 18px;
 
-        padding: 8px 14px;
+    border-radius: 999px;
 
-        border-radius: 999px;
+    border: 1px solid rgba(129, 140, 248, 0.28);
 
-        background: rgba(99, 102, 241, 0.10);
+    background: rgba(99, 102, 241, 0.09);
 
-        border: 1px solid rgba(129, 140, 248, 0.22);
+    color: #c7d2fe;
 
-        color: #c7d2fe;
+    font-size: 13px;
+    font-weight: 600;
+}
 
-        font-size: 13px;
-        font-weight: 600;
+.hero-title {
+    font-size: 58px;
+    font-weight: 850;
 
-        margin-bottom: 18px;
-    }
+    letter-spacing: -2px;
+    line-height: 1.04;
 
-    .hero-title {
-        font-size: 54px;
-        font-weight: 850;
-        letter-spacing: -1.8px;
-        line-height: 1.05;
+    margin-bottom: 18px;
 
-        margin: 0;
+    background:
+        linear-gradient(
+            90deg,
+            #ffffff 0%,
+            #dbeafe 50%,
+            #93c5fd 100%
+        );
 
-        background:
-            linear-gradient(
-                90deg,
-                #ffffff 0%,
-                #e0e7ff 45%,
-                #93c5fd 100%
-            );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
 
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
+.hero-subtitle {
+    max-width: 780px;
 
-    .hero-subtitle {
-        margin-top: 18px;
+    color: #a5afbe;
 
-        max-width: 760px;
+    font-size: 17px;
+    line-height: 1.7;
+}
 
-        font-size: 17px;
-        line-height: 1.7;
+.steps {
+    display: flex;
+    flex-wrap: wrap;
 
-        color: #9ca9bd;
-    }
+    gap: 10px;
 
+    margin-top: 28px;
+}
 
-    /* ADIMLAR */
-    .steps {
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
+.step {
+    padding: 10px 16px;
 
-        margin-top: 28px;
-        margin-bottom: 38px;
-    }
+    border-radius: 999px;
 
-    .step {
-        padding: 10px 15px;
+    border: 1px solid rgba(255,255,255,0.08);
 
-        border-radius: 999px;
+    background: rgba(255,255,255,0.035);
 
-        background: rgba(255,255,255,0.035);
+    color: #d6dce5;
 
-        border: 1px solid rgba(255,255,255,0.08);
+    font-size: 13px;
+}
 
-        color: #d2d8e2;
+.step-number {
+    color: #a5b4fc;
+    font-weight: 800;
 
-        font-size: 13px;
-        font-weight: 500;
-    }
+    margin-right: 6px;
+}
 
-    .step-number {
-        color: #a5b4fc;
-        font-weight: 800;
-        margin-right: 5px;
-    }
 
+/* SECTION */
 
-    /* BÖLÜM BAŞLIKLARI */
-    .section-header {
-        display: flex;
-        align-items: center;
+.section-title {
+    margin-top: 14px;
+    margin-bottom: 5px;
 
-        gap: 10px;
+    font-size: 21px;
+    font-weight: 750;
 
-        margin-top: 18px;
-        margin-bottom: 12px;
+    color: #f3f4f6;
+}
 
-        font-size: 20px;
-        font-weight: 750;
+.section-description {
+    margin-bottom: 14px;
 
-        color: #f3f4f6;
-    }
+    color: #7f899a;
 
-    .section-description {
-        color: #7f8a9c;
-        font-size: 14px;
-        margin-bottom: 14px;
-    }
+    font-size: 14px;
+}
 
 
-    /* UPLOADER */
-    [data-testid="stFileUploader"] {
-        margin-bottom: 12px;
-    }
+/* FILE UPLOADER */
 
-    [data-testid="stFileUploaderDropzone"] {
-        padding: 22px;
+[data-testid="stFileUploaderDropzone"] {
+    padding: 24px;
 
-        border-radius: 17px;
+    border-radius: 17px;
 
-        border: 1px dashed rgba(129, 140, 248, 0.55);
+    border: 1px dashed rgba(129,140,248,0.55);
 
-        background:
-            linear-gradient(
-                135deg,
-                rgba(99, 102, 241, 0.055),
-                rgba(59, 130, 246, 0.025)
-            );
-    }
+    background:
+        linear-gradient(
+            135deg,
+            rgba(99,102,241,0.06),
+            rgba(59,130,246,0.025)
+        );
+}
 
 
-    /* INPUT */
-    [data-testid="stTextInput"] input {
-        height: 52px;
+/* TEXT INPUT */
 
-        border-radius: 13px;
+[data-testid="stTextInput"] input {
+    height: 52px;
 
-        border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 13px;
 
-        background: rgba(255,255,255,0.035);
+    border: 1px solid rgba(255,255,255,0.10);
 
-        font-size: 15px;
-    }
+    background: rgba(255,255,255,0.04);
+}
 
-    [data-testid="stTextInput"] input:focus {
-        border-color: rgba(129, 140, 248, 0.70);
-        box-shadow: 0 0 0 1px rgba(129, 140, 248, 0.25);
-    }
+[data-testid="stTextInput"] input:focus {
+    border-color: rgba(129,140,248,0.75);
 
+    box-shadow:
+        0 0 0 1px rgba(129,140,248,0.20);
+}
 
-    /* BUTTON */
-    div.stButton > button {
-        width: 100%;
 
-        min-height: 50px;
+/* BUTTON */
 
-        border-radius: 13px;
+div.stButton > button {
+    width: 100%;
 
-        border: 1px solid rgba(255,255,255,0.06);
+    min-height: 50px;
 
-        background:
-            linear-gradient(
-                90deg,
-                #4f46e5,
-                #6366f1,
-                #3b82f6
-            );
+    border-radius: 13px;
 
-        color: white;
+    border: none;
 
-        font-size: 15px;
-        font-weight: 700;
+    background:
+        linear-gradient(
+            90deg,
+            #4f46e5,
+            #6366f1,
+            #3b82f6
+        );
 
-        transition: 0.18s ease;
-    }
+    color: white;
 
-    div.stButton > button:hover {
-        border: 1px solid rgba(255,255,255,0.14);
+    font-size: 15px;
+    font-weight: 700;
 
-        transform: translateY(-1px);
+    transition: 0.18s ease;
+}
 
-        box-shadow:
-            0 8px 30px rgba(79, 70, 229, 0.20);
-    }
+div.stButton > button:hover {
+    border: none;
 
+    transform: translateY(-1px);
 
-    /* DURUM KARTI */
-    .document-card {
-        margin-top: 14px;
+    box-shadow:
+        0 10px 30px rgba(79,70,229,0.22);
+}
 
-        padding: 16px 18px;
 
-        border-radius: 14px;
+/* DOCUMENT INFO */
 
-        background: rgba(34, 197, 94, 0.075);
+.document-ok {
+    margin-top: 15px;
 
-        border: 1px solid rgba(34, 197, 94, 0.18);
+    padding: 16px 18px;
 
-        color: #c7f9d4;
+    border-radius: 14px;
 
-        font-size: 14px;
-    }
+    border: 1px solid rgba(34,197,94,0.19);
 
+    background: rgba(34,197,94,0.075);
 
-    /* AI CEVAP KARTI */
-    .answer-card {
-        position: relative;
+    color: #c8f7d5;
 
-        margin-top: 26px;
-        margin-bottom: 16px;
+    font-size: 14px;
+}
 
-        padding: 26px;
+.stats {
+    display: flex;
+    flex-wrap: wrap;
 
-        border-radius: 20px;
+    gap: 9px;
 
-        border: 1px solid rgba(129, 140, 248, 0.28);
+    margin-top: 13px;
+    margin-bottom: 30px;
+}
 
-        background:
-            linear-gradient(
-                135deg,
-                rgba(79,70,229,0.13),
-                rgba(59,130,246,0.065)
-            );
+.stat {
+    padding: 9px 13px;
 
-        box-shadow:
-            0 20px 60px rgba(0,0,0,0.18);
-    }
+    border-radius: 10px;
 
-    .answer-label {
-        display: flex;
-        align-items: center;
-        gap: 8px;
+    border: 1px solid rgba(255,255,255,0.07);
 
-        margin-bottom: 13px;
+    background: rgba(255,255,255,0.035);
 
-        color: #a5b4fc;
+    color: #9da8b8;
 
-        font-size: 13px;
-        font-weight: 800;
+    font-size: 12px;
+}
 
-        letter-spacing: 0.5px;
-    }
 
-    .answer-text {
-        font-size: 20px;
-        line-height: 1.65;
+/* ANSWER */
 
-        color: #f4f7fb;
-    }
+.answer-card {
+    margin-top: 25px;
+    margin-bottom: 18px;
 
-    .answer-source {
-        margin-top: 18px;
+    padding: 27px;
 
-        color: #8490a3;
+    border-radius: 20px;
 
-        font-size: 13px;
-    }
+    border: 1px solid rgba(129,140,248,0.30);
 
+    background:
+        linear-gradient(
+            135deg,
+            rgba(79,70,229,0.14),
+            rgba(59,130,246,0.07)
+        );
 
-    /* İSTATİSTİKLER */
-    .stat-container {
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
+    box-shadow:
+        0 20px 60px rgba(0,0,0,0.18);
+}
 
-        margin-top: 13px;
-        margin-bottom: 25px;
-    }
+.answer-label {
+    margin-bottom: 12px;
 
-    .stat {
-        padding: 9px 13px;
+    color: #a5b4fc;
 
-        border-radius: 10px;
+    font-size: 13px;
+    font-weight: 800;
 
-        background: rgba(255,255,255,0.035);
+    letter-spacing: .7px;
+}
 
-        border: 1px solid rgba(255,255,255,0.07);
+.answer-text {
+    color: #f5f7fb;
 
-        color: #9da9bc;
+    font-size: 20px;
+    line-height: 1.65;
+}
 
-        font-size: 12px;
-    }
+.answer-source {
+    margin-top: 18px;
 
+    color: #8490a2;
 
-    /* FOOTER */
-    .footer {
-        margin-top: 60px;
+    font-size: 13px;
+}
 
-        padding-top: 24px;
 
-        border-top: 1px solid rgba(255,255,255,0.06);
+/* FOOTER */
 
-        text-align: center;
+.footer {
+    margin-top: 65px;
 
-        color: #566174;
+    padding-top: 24px;
 
-        font-size: 12px;
-        line-height: 1.8;
-    }
+    border-top: 1px solid rgba(255,255,255,0.06);
 
+    text-align: center;
 
-    /* STREAMLIT ÜST BOŞLUĞU */
-    header[data-testid="stHeader"] {
-        background: transparent;
-    }
+    color: #596476;
 
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+    font-size: 12px;
+    line-height: 1.8;
+}
 
 
-# ==================================================
-# ÜST ALAN
-# ==================================================
+/* STREAMLIT HEADER */
 
-st.markdown(
-    """
-    <div class="hero">
+header[data-testid="stHeader"] {
+    background: transparent;
+}
 
-        <div class="hero-badge">
-            ✨ Yapay Zekâ Destekli Doküman Analizi
+</style>
+""")
+
+
+# =========================================================
+# ÜST TASARIM
+# =========================================================
+
+st.html("""
+<div class="hero">
+
+    <div class="hero-badge">
+        ✨ Yapay Zekâ Destekli Doküman Analizi
+    </div>
+
+    <div class="hero-title">
+        Doküman AI Asistanı
+    </div>
+
+    <div class="hero-subtitle">
+        PDF veya TXT dokümanınızı yükleyin.
+        Sistem dokümanı analiz etsin, ilgili bölümleri bulsun
+        ve sorularınızı yalnızca yüklediğiniz dokümandaki
+        bilgilere göre yanıtlasın.
+    </div>
+
+    <div class="steps">
+
+        <div class="step">
+            <span class="step-number">01</span>
+            Dokümanı Yükle
         </div>
 
-        <div class="hero-title">
-            Doküman AI Asistanı
+        <div class="step">
+            <span class="step-number">02</span>
+            Sorunu Yaz
         </div>
 
-        <div class="hero-subtitle">
-            PDF veya TXT dokümanınızı yükleyin.
-            Sistem dokümanı analiz etsin, ilgili bölümleri bulsun
-            ve sorularınızı yalnızca yüklediğiniz dokümandaki
-            bilgilere göre yanıtlasın.
-        </div>
-
-        <div class="steps">
-
-            <div class="step">
-                <span class="step-number">01</span>
-                Dokümanı Yükle
-            </div>
-
-            <div class="step">
-                <span class="step-number">02</span>
-                Sorunu Yaz
-            </div>
-
-            <div class="step">
-                <span class="step-number">03</span>
-                AI Cevabını Al
-            </div>
-
+        <div class="step">
+            <span class="step-number">03</span>
+            AI Cevabını Al
         </div>
 
     </div>
-    """,
-    unsafe_allow_html=True
-)
+
+</div>
+""")
 
 
-# ==================================================
-# DOSYA YÜKLEME
-# ==================================================
+# =========================================================
+# DOKÜMAN YÜKLEME
+# =========================================================
 
-st.markdown(
-    """
-    <div class="section-header">
-        📎 Doküman Yükle
-    </div>
+st.html("""
+<div class="section-title">
+    📎 Doküman Yükle
+</div>
 
-    <div class="section-description">
-        Analiz etmek istediğiniz PDF veya TXT dosyasını seçin.
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+<div class="section-description">
+    Analiz etmek istediğiniz PDF veya TXT dosyasını seçin.
+</div>
+""")
 
 
 uploaded_file = st.file_uploader(
@@ -444,32 +421,35 @@ uploaded_file = st.file_uploader(
 )
 
 
-# ==================================================
-# DOSYA VARSA İŞLE
-# ==================================================
+# =========================================================
+# DOSYA YÜKLENDİYSE
+# =========================================================
 
 if uploaded_file is not None:
 
-    safe_filename = html.escape(uploaded_file.name)
-
-    st.markdown(
-        f"""
-        <div class="document-card">
-            ✅ <b>{safe_filename}</b> başarıyla yüklendi.
-        </div>
-        """,
-        unsafe_allow_html=True
+    safe_filename = html.escape(
+        uploaded_file.name
     )
 
-    suffix = Path(uploaded_file.name).suffix
+    st.html(
+        f"""
+        <div class="document-ok">
+            ✅ <b>{safe_filename}</b> başarıyla yüklendi.
+        </div>
+        """
+    )
+
+    suffix = Path(
+        uploaded_file.name
+    ).suffix
 
     temp_path = None
 
     try:
 
-        # ------------------------------------------
+        # -------------------------------------------------
         # GEÇİCİ DOSYA
-        # ------------------------------------------
+        # -------------------------------------------------
 
         with tempfile.NamedTemporaryFile(
             delete=False,
@@ -483,9 +463,9 @@ if uploaded_file is not None:
             temp_path = temp_file.name
 
 
-        # ------------------------------------------
-        # DOKÜMANI HAZIRLA
-        # ------------------------------------------
+        # -------------------------------------------------
+        # DOKÜMAN ANALİZİ
+        # -------------------------------------------------
 
         with st.spinner(
             "Doküman analiz ediliyor..."
@@ -521,17 +501,18 @@ if uploaded_file is not None:
             )
 
 
-        # ------------------------------------------
-        # DOKÜMAN BİLGİSİ
-        # ------------------------------------------
+        # -------------------------------------------------
+        # İSTATİSTİKLER
+        # -------------------------------------------------
 
         word_count = len(
             cleaned_text.split()
         )
 
-        st.markdown(
+
+        st.html(
             f"""
-            <div class="stat-container">
+            <div class="stats">
 
                 <div class="stat">
                     📚 {len(chunks)} metin parçası
@@ -546,27 +527,23 @@ if uploaded_file is not None:
                 </div>
 
             </div>
-            """,
-            unsafe_allow_html=True
-        )
-
-
-        # ==================================================
-        # SORU ALANI
-        # ==================================================
-
-        st.markdown(
             """
-            <div class="section-header">
-                💬 Doküman Hakkında Soru Sor
-            </div>
-
-            <div class="section-description">
-                Sorunuzun cevabı yüklediğiniz dokümanda aranacaktır.
-            </div>
-            """,
-            unsafe_allow_html=True
         )
+
+
+        # =================================================
+        # SORU ALANI
+        # =================================================
+
+        st.html("""
+        <div class="section-title">
+            💬 Doküman Hakkında Soru Sor
+        </div>
+
+        <div class="section-description">
+            Sorunuzun cevabı yüklediğiniz dokümanda aranacaktır.
+        </div>
+        """)
 
 
         question = st.text_input(
@@ -576,9 +553,9 @@ if uploaded_file is not None:
         )
 
 
-        # ==================================================
-        # CEVAP BUTONU
-        # ==================================================
+        # =================================================
+        # CEVAP
+        # =================================================
 
         if st.button(
             "✨ Yapay Zekâ Cevabını Oluştur"
@@ -596,9 +573,9 @@ if uploaded_file is not None:
                     "Yapay zekâ dokümanda ilgili bilgileri arıyor..."
                 ):
 
-                    # --------------------------------------
-                    # İLGİLİ CHUNKLARI BUL
-                    # --------------------------------------
+                    # -------------------------------------
+                    # RETRIEVAL
+                    # -------------------------------------
 
                     results = find_relevant_chunks(
                         question,
@@ -608,9 +585,9 @@ if uploaded_file is not None:
                     )
 
 
-                    # --------------------------------------
-                    # API ANAHTARI
-                    # --------------------------------------
+                    # -------------------------------------
+                    # API KEY
+                    # -------------------------------------
 
                     api_key = os.getenv(
                         "OPENAI_API_KEY"
@@ -630,9 +607,9 @@ if uploaded_file is not None:
                             api_key = None
 
 
-                    # --------------------------------------
-                    # ANAHTAR YOK
-                    # --------------------------------------
+                    # -------------------------------------
+                    # API ANAHTARI YOK
+                    # -------------------------------------
 
                     if not api_key:
 
@@ -641,9 +618,9 @@ if uploaded_file is not None:
                         )
 
 
-                    # --------------------------------------
+                    # -------------------------------------
                     # CEVAP ÜRET
-                    # --------------------------------------
+                    # -------------------------------------
 
                     else:
 
@@ -661,11 +638,7 @@ if uploaded_file is not None:
                             )
 
 
-                            # ----------------------------------
-                            # AI CEVAP KARTI
-                            # ----------------------------------
-
-                            st.markdown(
+                            st.html(
                                 f"""
                                 <div class="answer-card">
 
@@ -683,14 +656,13 @@ if uploaded_file is not None:
                                     </div>
 
                                 </div>
-                                """,
-                                unsafe_allow_html=True
+                                """
                             )
 
 
-                            # ----------------------------------
+                            # -----------------------------
                             # KAYNAKLAR
-                            # ----------------------------------
+                            # -----------------------------
 
                             with st.expander(
                                 "🔎 Kullanılan doküman bölümlerini incele"
@@ -703,11 +675,10 @@ if uploaded_file is not None:
 
                                     st.markdown(
                                         f"""
-                                        ### Kaynak {i}
+### Kaynak {i}
 
-                                        **Benzerlik skoru:**
-                                        `{result['score']:.3f}`
-                                        """
+**Benzerlik skoru:** `{result['score']:.3f}`
+"""
                                     )
 
                                     st.write(
@@ -731,9 +702,9 @@ if uploaded_file is not None:
                             )
 
 
-    # ==================================================
-    # GEÇİCİ DOSYAYI SİL
-    # ==================================================
+    # =====================================================
+    # GEÇİCİ DOSYAYI TEMİZLE
+    # =====================================================
 
     finally:
 
@@ -747,20 +718,17 @@ if uploaded_file is not None:
             )
 
 
-# ==================================================
+# =========================================================
 # FOOTER
-# ==================================================
+# =========================================================
 
-st.markdown(
-    """
-    <div class="footer">
+st.html("""
+<div class="footer">
 
-        <b>Doküman AI Asistanı</b>
-        <br>
+    <b>Doküman AI Asistanı</b>
+    <br>
 
-        PDF / TXT • Semantic Search • Embedding • Yapay Zekâ
+    PDF / TXT • Semantic Search • Embedding • Yapay Zekâ
 
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+</div>
+""")
